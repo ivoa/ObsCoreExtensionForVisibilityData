@@ -157,8 +157,29 @@ t\_exp\_min and t\_exp\_max are added because of strong variation in the individ
 
 \subsection{uv parameters}
 uv\_distance\_min and uv\_distance\_max are straigthforward.
-uv\_distribution\_exc is computed as (formula)
-uv\_distribution\_fill is computed as (formula)
+To compute the eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allow the definition of the UV distribution eccentricity (
+uv\_distribution\_exc) computed as follows:
+\begin{equation}
+uv\_distribution\_exc = \sqrt{1-\frac{b^2}{a^2}}
+\end{equation}
+where a is the major axis length and b is the minor axis length.
+The filling factor of the UV plane (hereafter uv\_distribution\_fill) is computed as the average number of samples found in a $N^{uv}_{samples}$x$N^{uv}_{samples}$ equispaced grid enclosing the rotated ellipse. In formulas,
+ the boundaries of a cell (i,j) are defined by the boundaries
+\begin{equation}
+u \in [u_{min} + \frac{u_{max} - u_{min}}{N^{uv}_{samples}} \cdot i , u_{min} + \frac{u_{max} - u_{min}}{N^{uv}_{samples}} \cdot (i + 1)]
+\end{equation} 
+and
+\begin{equation}
+v \in [v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot i , v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot (i + 1)]
+\end{equation} 
+where $u_{max}$/$v_{max}$ are the respective maximum u/v of the uv sample and $u_{min}$/$v_{min}$ is the minimum u/v of the uv sample.
+
+Given the above boundaries the number of samples within a cell (i,j) will be $n^{uv}_{i,j}$ and uv\_distribution\_fill will be then computed as 
+\begin{equation}
+uv\_distribution\_fill = \frac{\sum^{N^{uv}_{samples}}_1 \sum^{N^{uv}_{samples}}_{1} n^{uv}_{i,j} }{(N^{uv}_{samples}) ^ 2},
+\end{equation}
+
+in the preliminary analysis $N^{uv}_{samples} = 1000$.
 
 \subsection{instrumental parameters}
 
