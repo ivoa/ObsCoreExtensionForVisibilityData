@@ -49,10 +49,8 @@ The authors would like to thank all the participants in DM-WG and Radioastronomy
 \section{Introduction}
 ObsCore specification \citep{std:OBSCORE} defines both a minimal datamodel to describe datasets and a table consistent with the model which can be served by TAP services. It has been successful to define a lot of data discovery services in astronomy.
 
-The emergence of the Radioastronomy Interest Group in the IVOA in April 2020 confirmed the strong interest of the radio astronomy community to distribute their data in the VO. A lot of groups now distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the situation is a bit different for interferometry visibility data. This was already exposed in 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO" \footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still worth reading. The current specification tries to find solutions for that.
-% Mireille: find solutions for that. 
-% instead : cover the needs exposed in this note. 
-
+The emergence of the Radioastronomy Interest Group in the IVOA in April 2020 confirmed the strong interest of the radio astronomy community to distribute their data in the VO. A lot of groups now distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the situation is a bit different for interferometry visibility data. This was already exposed in 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO" \footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still worth reading. The current specification tries to cover the needs exposed in this note. 
+%mireille:
 % the needs for today as explored in recent meetings in Escape framework can also be summarized here
 % add a short paragraph here
 Although the interferometry data are nowadays dominent in radio field, similar issues occur for optical interferometry data. The extension we are defining here is valid for both domains.  
@@ -68,9 +66,9 @@ Although the interferometry data are nowadays dominent in radio field, similar i
 % Mireille : it seems this is not the good diagram but the one of SIA 
 % change architexture diag
 
-The role of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's only a fine grain improvement of this specification. 
+%The role of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's only a fine grain improvement of this specification. 
 % Mireille's  suggestion 
-The scope of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's goal is to add new visibilities specific features to existing ObsCore metadata tables and expose them in ObsTAP TAP_SCHEMA. 
+The scope of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's goal is to add new visibilities specific features to existing ObsCore metadata tables and expose them in the ObsTAP TAP_SCHEMA. 
 
 \section{Visibility data specificities from the Data Discovery point of view}
 \label{sec:specificities}
@@ -103,19 +101,15 @@ The scope of this Visibility ObsCore extension in the IVOA is very close to ObsC
     For large spectral ranges, the variations of fov and resolution along the axis may become so large that the typical value cannot be sufficient to characterize the dataset. 
     Ranges of values for fov size and resolution will achieve this task more accurately
 
-     The quality of the data strongly depends from the distribution of the visibility measurements in the uv plane : the more complete will be the % mireille 
-uv sampling plane %mireille
-, the better will be the reconstructed image. The uv plane distribution can be characterized by several numbers. 
-The minimal and maximum distance between measurements in the uv plane 
-% mireille provide assessments for 
-are important to get the actual % mireille spatial 
+     The quality of the data strongly depends from the distribution of the visibility measurements in the uv plane : the more complete the uv sampling plane, the better the reconstructed image. The uv plane distribution can be characterized by several numbers. 
+The minimal and maximum distance between measurements in the uv plane provide assessments for spatial 
 resolution and largest angular scale. 
 Beside this a uv plane filling factor of the distribution will allow to predict the quality of reconstruction
-% mireille suggestion : of the image in the distance plane (sky).
+of the image in the distance plane (sky).
 Eventually, the ellipticity of the distribution is a measure of the distortions that can affect the reconstruction.
           
-          Radioastronomers also check the quality of the visibility data by looking at some maps of the data structure.           The uv coverage map can show how complete and regular is the sampling in the uv plane and give an hint of resolution and maximum angular scale. 
-The visualisation of the dirty beam, which is the Fourier transform of the uv sampling function gives an hint of the intrinsic quality of possible reconstruction./As maps they are not queriable. So it is questionable if links to this maps are to be exposed in the extension table or only via a DataLink service. 
+          Radioastronomers also check the quality of the visibility data by looking at some maps of the data structure. The uv coverage map can show how complete and regular is the sampling in the uv plane and give an hint of resolution and maximum angular scale. 
+The visualisation of the dirty beam, which is the Fourier transform of the uv sampling function gives an hint of the intrinsic quality of possible reconstruction, as maps they are not queriable. So it is questionable if links to these maps are to be exposed in the extension table or only via a DataLink service. 
           
           If none of these uv characterization features are available to be exposed in the service we can still predict ranges of some of those by using some kind of facility description.  
           Important features are the antenna diameter (or maximum ?scale? antenna parameter) the number of antennae and the minimum and maximum distance between antennae of the array.
@@ -133,12 +127,7 @@ Astronomers usually know what they identify as a single observation : a complex 
 
 \subsection{obs\_publisher\_did}
 
-Visibility data observations are generally splitted in several subparts with 
-% mireille homogeneous spatial , time , spectral coverage intervals instead of
-consistent characterization parameters 
-% 
-described by a single ObsCore % mireille dataset entry instead of 
-record. Each of these records is considered as describing a dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory domain.
+Visibility data observations are generally splitted in several subparts with homogeneous spatial, time, spectral coverage intervals described by a single ObsCore record. Each of these records is considered as describing a dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory domain.
 
 \subsection{s\_fov}
 \label{sec:fov}
