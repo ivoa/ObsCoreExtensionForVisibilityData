@@ -157,6 +157,7 @@ t\_exp\_min and t\_exp\_max are added because of strong variation in the individ
 
 \subsection{uv parameters}
 uv\_distance\_min and uv\_distance\_max are straigthforward.
+
 To compute the eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allow the definition of the UV distribution eccentricity (
 uv\_distribution\_exc) computed as follows:
 \begin{equation}
