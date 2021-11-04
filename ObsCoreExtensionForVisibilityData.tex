@@ -42,9 +42,10 @@
 \section*{Acknowledgments}
 
 The authors would like to thank all the participants in DM-WG and Radioastronomy-IG discussions  for their ideas, critical reviews, and contributions to this document.
-% Mireille : insert 
-% support from Escape collaboration GRANT collaboration 
-% 
+We acknowledge also the support of ESCAPE (European Science Cluster of Astronomy
+and Particle Physics ESFRI Research Infrastructures) funded by the EU Horizon
+2020 research and innovation program (Grant Agreement n.824064).
+% are there other grants from partners to mention here?
 
 \section{Introduction}
 
@@ -52,6 +53,9 @@ ObsCore specification \citep{std:OBSCORE} defines both a minimal datamodel to de
 
 
 The emergence of the Radioastronomy Interest Group in the IVOA in April 2020 confirmed the strong interest of the radio astronomy community to distribute their data in the VO. A lot of groups now distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the situation is a bit different for interferometry visibility data. This was already exposed in 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO" \footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still worth reading. The current specification tries to cover the needs exposed in this note. 
+% Mireille an attempt to widen the scope ??
+With the expansion of large radio astronomy projects such as LOFAR, NenuFAR, the future SKA, etc. and the emergence of interesting research topics matching data in all electromagnetic regimes, the virtual observatory framework can facilitate a wider access to radio data for experts and non-specialists radio astronomers in order to support collaborations in multi-wavelength, multi-messenger astronomy. 
+
 %mireille:
 % the needs for today as explored in recent meetings in Escape framework can also be summarized here
 % add a short paragraph here
@@ -114,14 +118,14 @@ Eventually, the ellipticity of the distribution is a measure of the distortions 
 The visualisation of the dirty beam, which is the Fourier transform of the uv sampling function gives an hint of the intrinsic quality of possible reconstruction, as maps they are not queriable. So it is questionable if links to these maps are to be exposed in the extension table or only via a DataLink service. 
           
           If none of these uv characterization features are available to be exposed in the service we can still predict ranges of some of those by using some kind of facility description.  
-          Important features are the antenna diameter (or maximum ?scale? antenna parameter) the number of antennae and the minimum and maximum distance between antennae of the array.
+          Important features are the antenna diameter (or maximum antenna diameter), the number of antennae and the minimum and maximum distance between antennae of the array.
 
 \section{ObsCore attributes definition valid for visibility data}
 \label{sec:ObsCoreVisDef}
 
-Some mandatory or optional parameters will have peculiar estimation for visibility data.
-% ML suggestion:  For visibilities some of the definitions on Obscore datamodel elements need to be adjusted to fit 
-% the peculiarity of medata for datasets partition, uv space, etc.
+%Some mandatory or optional parameters will have peculiar estimation for visibility data.
+For visibilities some of the definitions on Obscore datamodel elements need to be adjusted to fit
+the peculiarity of medata for datasets partition, uv space, etc.
 
 \subsection{obs\_id}
 
@@ -129,7 +133,7 @@ Astronomers usually know what they identify as a single observation : a complex 
 
 \subsection{obs\_publisher\_did}
 
-Visibility data observations are generally splitted in several subparts with homogeneous spatial, time, spectral coverage intervals described by a single ObsCore record. Each of these records is considered as describing a dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory domain.
+Visibility data observations can be split in several subparts with homogeneous spatial, time, spectral coverage intervals, spectral resolution, etc. Each part can be described by a single ObsCore dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory domain.
 
 \subsection{s\_fov}
 \label{sec:fov}
@@ -171,11 +175,12 @@ The s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is th
 
 
 \subsection{uv parameters}
-uv\_distance\_min and uv\_distance\_max are straigthforward.
+%uv\_distance\_min and uv\_distance\_max are straigthforward.
+uv\_distance\_min and uv\_distance\_max are evaluated by fitting an ellipse on the visibilities present in the uv plane.
 
 % Mireille but still for the spec it is good to redefine them here
-To compute the eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. 
-The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allow the definition of the UV distribution eccentricity (
+To compute the ellipse's eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. 
+The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allows the definition of the UV distribution eccentricity:
 
 uv\_distribution\_exc) computed as follows:
 \begin{equation}
