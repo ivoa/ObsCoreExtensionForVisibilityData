@@ -23,6 +23,7 @@
 \author{Mark Kettenis}
 \author{Mark Lacy}
 \author{Mattia Mancini}
+\author{Yan Grange}
 
 
 \editor{Fran\c cois Bonnarel}
@@ -41,12 +42,24 @@
 \section*{Acknowledgments}
 
 The authors would like to thank all the participants in DM-WG and Radioastronomy-IG discussions  for their ideas, critical reviews, and contributions to this document.
+We acknowledge also the support of ESCAPE (European Science Cluster of Astronomy
+and Particle Physics ESFRI Research Infrastructures) funded by the EU Horizon
+2020 research and innovation program (Grant Agreement n.824064).
+% are there other grants from partners to mention here?
 
 \section{Introduction}
+
+
 ObsCore specification \citep{std:OBSCORE} defines both a minimal datamodel to describe datasets and a table consistent with the model which can be served by Tap services. It has been successful to define a lot of data discovery services in astronomy.
 
-The emergence of the Radioastronomy interest group in the IVOA in April 2020 showed the strong interest of the radio astronomy community to distribute their data in the VO. A lot of groups now distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html} If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the situation is a bit different for interferometry visibility data. This was already exposedin 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO"\footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still worth reading. The current specification tries to find solutions for that. 
- 
+
+The emergence of the Radioastronomy Interest Group in the IVOA in April 2020 confirmed the strong interest of the radio astronomy community to distribute their data in the VO. A lot of groups now distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the situation is a bit different for interferometry visibility data. This was already exposed in 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO" \footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still worth reading. The current specification tries to cover the needs exposed in this note. 
+% Mireille an attempt to widen the scope ??
+With the expansion of large radio astronomy projects such as LOFAR, NenuFAR, the future SKA, etc. and the emergence of interesting research topics matching data in all electromagnetic regimes, the virtual observatory framework can facilitate a wider access to radio data for experts and non-specialists radio astronomers in order to support collaborations in multi-wavelength, multi-messenger astronomy. 
+
+%mireille:
+% the needs for today as explored in recent meetings in Escape framework can also be summarized here
+% add a short paragraph here
 Although the interferometry data are nowadays dominent in radio field, similar issues occur for optical interferometry data. The extension we are defining here is valid for both domains.  
 
 
@@ -57,12 +70,14 @@ Although the interferometry data are nowadays dominent in radio field, similar i
 \label{fig:architecture}
 \end{figure}
 
+% Mireille : it seems this is not the good diagram but the one of SIA 
+% change architexture diag
 
-The role of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's only a fine grain improvement of this specification. 
+%The role of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's only a fine grain improvement of this specification. 
+% Mireille's  suggestion 
+The scope of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's goal is to add new visibilities specific features to existing ObsCore metadata tables and expose them in the ObsTAP TAP\_SCHEMA. 
 
-
-
-\section{Visibility data specificities from the Data discovery point of view}
+\section{Visibility data specificities from the Data Discovery point of view}
 \label{sec:specificities}
 
     Visibility data are sets of  complex number measurements giving amplitude and phase of interference franges obtained for a given field in sky, a given time, a given wavelength or polarisation. 
@@ -93,31 +108,33 @@ The role of this Visibility ObsCore extension in the IVOA is very close to ObsCo
     For large spectral ranges, the variations of fov and resolution along the axis may become so large that the typical value cannot be sufficient to characterize the dataset. 
     Ranges of values for fov size and resolution will achieve this task more accurately
 
-     The quality of the data strongly depends from the distribution of the visibility measurements in the uv plane : the more complete will be the sampling, the better will be the recosntructed image. The uv plane distribution can be characterized by several numbers.The minimal and maximum distance between measurements in the uv plane are important to get the actual resolution and largest angular scale. Beside this a uv plane filling factor of the distribution  will allow to predict the quality of reconstruction.
-          Eventually, the ellipticity of the distribution is a measure of the distortions that can affect the reconstruction.
+     The quality of the data strongly depends from the distribution of the visibility measurements in the uv plane : the more complete the uv sampling plane, the better the reconstructed image. The uv plane distribution can be characterized by several numbers. 
+The minimal and maximum distance between measurements in the uv plane provide assessments for spatial 
+resolution and largest angular scale. 
+Beside this a uv plane filling factor of the distribution will allow to predict the quality of reconstruction
+of the image in the distance plane (sky).
+Eventually, the ellipticity of the distribution is a measure of the distortions that can affect the reconstruction.
           
-          Radioastronomers also check the quality of the visibility data by looking at some maps  of the data structure.           The Uv coverage map can show how complete and regular is the sampling in the uv plane and give an hint of resolution and maximum angular scale
-The visualisation of the dirty beam, which is the fourier transform of the uv sampling function gives an hint of the intrinsec quality of possible reconstruction./As maps they are not queriable. So it is questionable if links to this maps are to be exposed in the extension table or only via a DataLink service. 
+          Radioastronomers also check the quality of the visibility data by looking at some maps of the data structure. The uv coverage map can show how complete and regular is the sampling in the uv plane and give an hint of resolution and maximum angular scale. 
+The visualisation of the dirty beam, which is the Fourier transform of the uv sampling function gives an hint of the intrinsic quality of possible reconstruction, as maps they are not queriable. So it is questionable if links to these maps are to be exposed in the extension table or only via a DataLink service. 
           
-          If none of these uv characterization features are available to be exposed in the service we can stil predict ranges of some of those by using some kind of facility description.  
-          Important features are the antenna diameter (or maximum antenna parameter) the number of antennane and the minimum and maximum distance between antennane of the array.
-          
-           
-
-
+          If none of these uv characterization features are available to be exposed in the service we can still predict ranges of some of those by using some kind of facility description.  
+          Important features are the antenna diameter (or maximum antenna diameter), the number of antennae and the minimum and maximum distance between antennae of the array.
 
 \section{ObsCore attributes definition valid for visibility data}
 \label{sec:ObsCoreVisDef}
 
-Some mandatory or optional parameters will have peculiar estimation for visibility data.
+%Some mandatory or optional parameters will have peculiar estimation for visibility data.
+For visibilities some of the definitions on Obscore datamodel elements need to be adjusted to fit
+the peculiarity of medata for datasets partition, uv space, etc.
 
 \subsection{obs\_id}
 
-Astronomers usually know what they identify as a single observation : a complex set of measurements made in given sequence of time. obs\_id should define unambiguously each observation.
+Astronomers usually know what they identify as a single observation : a complex set of measurements made in a given sequence of time. obs\_id should define unambiguously each observation.
 
 \subsection{obs\_publisher\_did}
 
-Visibility data observations are generally splitted in several subparts with consistent characterozation parameters described by a single ObsCore record. Each of these records is consiedered as describing a dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory.
+Visibility data observations can be split in several subparts with homogeneous spatial, time, spectral coverage intervals, spectral resolution, etc. Each part can be described by a single ObsCore dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory domain.
 
 \subsection{s\_fov}
 \label{sec:fov}
@@ -135,28 +152,38 @@ This shape will be the typical contour of the detectable beam. Of course it cann
 
 \subsection{o\_ucd}
 
-In the case of visibility data the "observable" is a complex number representing fourier coefficients of the image Fourier transform. Its ucd is stat.fourier. 
+In the case of visibility data the "observable" is a complex number representing Fourier coefficients of the image Fourier transform. Its UCD string is \emph{stat.fourier}. 
 
 \subsection{t\_exptime}
+TBC
 
 \subsection{t\_resolution}
-
+TBC 
 
 \section{ObsCore extension for visibility data}
 
-Table \ref{tab:ExtensionAtt} shows the additional parameters we propose to add to ObsCore in order to better describe visibility data.
-In TAP or SIA services, they can be added to the main ObsCore table or provided in an extra table which will be joined to the main table. 
+Table \ref{tab:ExtensionAtt} shows the %additional 
+parameters we propose to add to ObsCore in order to better describe visibility data.
+Two options can be considered in the TAP or SIA services descriptions: 
+\begin{itemize}
+\item adding the new data model elements directly into the main ObsCore table
+\item providing an extra table for these, named ivoa.visibilities for instance,  which will be joined to the main table. 
+\end{itemize}
+
 \subsection{spatial parameters}
 
 The s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is the typical wavelength and l is the smallest distance in the uv plane. s\_fov\_min, s\_fov\_max, s\_resolution\_min, s\_resolution\_max are estimated like the typical values (see subsections \ref{sec:fov} and \ref{sec:res} ) where $\lambda$ is replaced by the minimum and maximum wavelength of the spectral ranges
 
-\subsection{time parameters}
-
-t\_exp\_min and t\_exp\_max are added because of strong variation in the individual time stamps duration.
 
 \subsection{uv parameters}
-uv\_distance\_min and uv\_distance\_max are straigthforward.
-To compute the eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $x/y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allow the definition of the UV distribution eccentricity (
+
+%uv\_distance\_min and uv\_distance\_max are straigthforward.
+uv\_distance\_min and uv\_distance\_max are evaluated by fitting an ellipse on the visibilities present in the uv plane.
+
+% Mireille but still for the spec it is good to redefine them here
+To compute the ellipse's eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. 
+The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allows the definition of the UV distribution eccentricity:
+
 uv\_distribution\_exc) computed as follows:
 \begin{equation}
 uv\_distribution\_exc = \sqrt{1-\frac{b^2}{a^2}}
@@ -180,6 +207,12 @@ uv\_distribution\_fill = \frac{\sum^{N^{uv}_{samples}}_{i=1} \sum^{N^{uv}_{sampl
 
 in the preliminary analysis $N^{uv}_{samples} = 1000$.
 
+
+% Mireille: moved time param below uv space because uv plane deals with spatial features 
+
+\subsection{time parameters}
+
+t\_exp\_min and t\_exp\_max are added because of strong variation in the individual time stamps duration.
 \subsection{instrumental parameters}
 
 They all give a predefined raw idea of resolution, field of view, maximum angular scale and sampling quality.
@@ -187,8 +220,10 @@ They all give a predefined raw idea of resolution, field of view, maximum angula
 \subsection{uv coverage and dirty beam map}
 
 These uv\_coverage\_map and s\_resolution\_beam\_dirty parameters are  intended to be url to files containing these maps. 
-Implementers may want to avoid adding url columns to the ObsCore table. In that case DataLink \citep{std:DataLink} may provide a solution. The semantics FIELD in the \{link\} response    will contain \#auxiliary  for links to this map while  the content\_qualifier FIELD could contain the utype.
-
+Implementers may want to avoid adding url columns to the ObsCore table. 
+In that case DataLink \citep{std:DataLink} may provide a solution. The semantics FIELD in the \{link\} response  will contain \#auxiliary  for links to this map while  the content\_qualifier FIELD could contain the utype
+defined here in this ObsCore extension.
+.
         
 \begin{landscape}
 \begin{longtable}{l  p{4cm} p{4cm} p{4cm} l l}
@@ -221,8 +256,13 @@ Implementers may want to avoid adding url columns to the ObsCore table. In that 
 \sptablerule
 \texttt{uv\_distribution\_fill}&\texttt{filling factor of uv distribution}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline FillingFactor}&stat.fourier;pos& \cr
 \sptablerule
-\texttt{instrument\_ant\_number}&\texttt{number of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber}&instr.baseline;meta.number& \cr
+% mireille here for antennae features , it is clear it belongs to instrument. 
+%Not useful to use the term in the name .
+%\texttt{instrument\_ant\_number}&\texttt{number of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber}&instr.baseline;meta.number& \cr
+%\sptablerule
+\texttt{ant\_number}&\texttt{number of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber}&instr.baseline;meta.number& \cr
 \sptablerule
+% same for all antenae features
 \texttt{instrument\_ant\_min\_dist}&\texttt{minimum distance between antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline MinDist}&instr.baseline;stat.min&m \cr
 \sptablerule
 \texttt{instrument\_ant\_max\_dist}&\texttt{maximum distance between antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline MaxDist}&instr.baseline;stat.max&m \cr
