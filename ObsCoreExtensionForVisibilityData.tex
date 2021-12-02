@@ -176,6 +176,7 @@ The s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is th
 
 
 \subsection{uv parameters}
+
 %uv\_distance\_min and uv\_distance\_max are straigthforward.
 uv\_distance\_min and uv\_distance\_max are evaluated by fitting an ellipse on the visibilities present in the uv plane.
 
@@ -195,13 +196,13 @@ u \in [u_{min} + \frac{u_{max} - u_{min}}{N^{uv}_{samples}} \cdot i , u_{min} + 
 \end{equation} 
 and
 \begin{equation}
-v \in [v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot i , v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot (i + 1)]
+v \in [v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot j , v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot (j + 1)]
 \end{equation} 
 where $u_{max}$/$v_{max}$ are the respective maximum u/v of the uv sample and $u_{min}$/$v_{min}$ is the minimum u/v of the uv sample.
 
 Given the above boundaries the number of samples within a cell (i,j) will be $n^{uv}_{i,j}$ and uv\_distribution\_fill will be then computed as 
 \begin{equation}
-uv\_distribution\_fill = \frac{\sum^{N^{uv}_{samples}}_1 \sum^{N^{uv}_{samples}}_{1} n^{uv}_{i,j} }{(N^{uv}_{samples}) ^ 2},
+uv\_distribution\_fill = \frac{\sum^{N^{uv}_{samples}}_{i=1} \sum^{N^{uv}_{samples}}_{j=1} n^{uv}_{i,j} }{(N^{uv}_{samples}) ^ 2},
 \end{equation}
 
 in the preliminary analysis $N^{uv}_{samples} = 1000$.
