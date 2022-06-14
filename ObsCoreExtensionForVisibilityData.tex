@@ -98,71 +98,103 @@ them in the ObsTAP TAP\_SCHEMA.
 \section{Visibility data specificities from the Data Discovery point of view}
 \label{sec:specificities}
 
-    Visibility data are sets of  complex number measurements giving amplitude and phase of interference franges obtained for a given field in sky, a given time, a given wavelength or polarisation. 
+Visibility data are sets of complex number measurements giving amplitude and phase of 
+interference fringes obtained for a given field in sky, a given time, a given wavelength 
+or polarisation. 
 
-    They can be organized in the following way : catalogs of matrices of measurements for various fields and settings of the antennae pairs distances and orientation. Matrices are regulary sampled in time, wavelength and polarisation.
+They can be organised in the following way: catalogs of matrices of measurements for 
+various fields and settings of the antenna pair distances and orientation. Matrices may 
+or may not be regulary sampled in time, wavelength and polarisation.
     
-    On the other side they are sparsed in the spatial fourier transform space (also called the uv plane) because it's impossible to cover regularly this space with a limited number of antennae pairs.
+On the other side they are sparse in the spatial Fourier transform space (also called the 
+\emph{uv} plane) because it's impossible to cover regularly this space with a limited 
+number of antenna pairs.
     
+How can the ObsCore parameters describe the characterization of these observations? 
+Obviously if there are several ``fields'' in the observation, these different fields should
+be described in several records of the ObsCore table because the s\_ra and s\_dec parameters 
+have to be unique.
 
-    How can the Obscore parameters describe the characterization of these observations ?
-    Obviously if there are several "fields" in the observation, these different fields would have to be described in several records of the Obscore table because the s\_ra and s\_dec parameters have to be unique.
-
-   Spectral and Time axis are regularly sampled but we can have gaps between time and spectral intervals. In addition, on the spectral axis different samplings may coexist.  
+Spectral and Time axis are regularly sampled but we can have gaps between time and spectral 
+intervals. In addition, on the spectral axis different samplings may coexist.  
    
-   
-    Again a visibility observation will be splitted in several ObsCore records in order to ensure the consistency of the time and spectral characterization parameters of each unit.
+Again a visibility observation will be split in several ObsCore records in order to ensure 
+the consistency of the time and spectral characterization parameters of each unit.
     
+Finally, visibility measurements can be either integrated for all polarisations or split in 
+the different polarisation parameters (e.g., Stokes parameters) 
 
-    Finally, visibility measurements can be either integrated for all polarisations or splitted in the different polarisation parameters (Stokes or whatever) 
+We consider that consistent ObsCore records as described above defines ``visibility'' 
+datasets in the sense of ObsCore.
 
-    
-    We consider that  consistent ObsCore records as described above defines  "visibility" datasets in the sense of ObsCore.
-
-    Radio Astronomers generally make use of frequencies for designating the spectral ranges of their observation. The standard ObsCore attributes em\_min em\_max  are in wavelength  andare not really convenient for them. That's why wde should also provide  their translation into frequencies. 
+Radioastronomers generally make use of frequencies for designating the spectral ranges of 
+their observation. The standard ObsCore attributes em\_min em\_max  are in wavelength and 
+are not really convenient for them. That's why we should also provide their translation 
+into frequencies. 
         
-    Moreover visibility data show some dependency of the spatial field of view and resolution with wavelength. Generally only a typical value for these two numbers can be given. 
-    Contrary to what occurs with direct spatial observations, large scales may also be filtered as are small scales This depends of the smallest distance in the frequency plane.
-    For large spectral ranges, the variations of fov and resolution along the axis may become so large that the typical value cannot be sufficient to characterize the dataset. 
-    Ranges of values for fov size and resolution will achieve this task more accurately
+Moreover visibility data show some dependency of the spatial field of view and resolution 
+with wavelength. Generally only a typical value for these two numbers can be given. 
+Contrary to what occurs with direct spatial observations, large scales may also be filtered 
+as are small scales. This depends of the smallest distance in the frequency plane.
+For large spectral ranges, the variations of fov and resolution along the axis may become so 
+large that the typical value cannot be sufficient to characterize the dataset. 
+Ranges of values for fov size and resolution will achieve this task more accurately
 
-     The quality of the data strongly depends from the distribution of the visibility measurements in the uv plane : the more complete the uv sampling plane, the better the reconstructed image. The uv plane distribution can be characterized by several numbers. 
-The minimal and maximum distance between measurements in the uv plane provide assessments for spatial 
-resolution and largest angular scale. 
-Beside this a uv plane filling factor of the distribution will allow to predict the quality of reconstruction
-of the image in the distance plane (sky).
-Eventually, the ellipticity of the distribution is a measure of the distortions that can affect the reconstruction.
-          
-          Radioastronomers also check the quality of the visibility data by looking at some maps of the data structure. The uv coverage map can show how complete and regular is the sampling in the uv plane and give an hint of resolution and maximum angular scale. 
-The visualisation of the dirty beam, which is the Fourier transform of the uv sampling function gives an hint of the intrinsic quality of possible reconstruction, as maps they are not queriable. So it is questionable if links to these maps are to be exposed in the extension table or only via a DataLink service. 
-          
-          If none of these uv characterization features are available to be exposed in the service we can still predict ranges of some of those by using some kind of facility description.  
-          Important features are the antenna diameter (or maximum antenna diameter), the number of antennae and the minimum and maximum distance between antennae of the array.
+The quality of the data strongly depends from the distribution of the visibility measurements 
+in the uv plane : the more complete the uv sampling plane, the better the reconstructed image. 
+The uv plane distribution can be characterized by several numbers. 
+The minimal and maximum distance between measurements in the uv plane provide assessments for 
+spatial resolution and largest angular scale. 
+Beside this a uv plane filling factor of the distribution will allow to predict the quality 
+of reconstruction of the image in the distance plane (sky).
+Eventually, the ellipticity of the distribution is a measure of the distortions that can 
+affect the reconstruction.
+
+Radioastronomers also check the quality of the visibility data by looking at some maps of 
+the data structure. The uv coverage map can show how complete and regular is the sampling in 
+the \emph{uv} plane and give an hint of resolution and maximum angular scale. 
+The visualisation of the dirty beam, which is the Fourier transform of the \emph{uv} sampling 
+function gives an hint of the intrinsic quality of possible reconstruction, as maps they are 
+not queriable. So it is questionable if links to these maps are to be exposed in the extension 
+table or only via a DataLink service. 
+
+If none of these \emph{uv} characterization features are available to be exposed in the service 
+we can still predict ranges of some of those by using some kind of facility description.  
+Important features are the antenna diameter (or maximum antenna diameter), the number of 
+antennae and the minimum and maximum distance between antennae of the array.
 
 \section{ObsCore attributes definition valid for visibility data}
 \label{sec:ObsCoreVisDef}
 
 %Some mandatory or optional parameters will have peculiar estimation for visibility data.
-For visibilities some of the definitions on Obscore datamodel elements need to be adjusted to fit
-the peculiarity of medata for datasets partition, uv space, etc.
+For visibilities some of the definitions on Obscore datamodel elements need to be adjusted 
+to fitthe peculiarity of medata for datasets partition, uv space, etc.
 
 \subsection{obs\_id}
 
-Astronomers usually know what they identify as a single observation : a complex set of measurements made in a given sequence of time. obs\_id should define unambiguously each observation.
+Astronomers usually know what they identify as a single observation : a complex set of 
+measurements made in a given sequence of time. obs\_id should define unambiguously each 
+observation.
 
 \subsection{obs\_publisher\_did}
 
-Visibility data observations can be split in several subparts with homogeneous spatial, time, spectral coverage intervals, spectral resolution, etc. Each part can be described by a single ObsCore dataset and has its own obs\_publisher\_did. It has to be unique in the virtual observatory domain.
+Visibility data observations can be split in several subparts with homogeneous spatial, 
+time, spectral coverage intervals, spectral resolution, etc. Each part can be described by 
+a single ObsCore dataset and has its own obs\_publisher\_did. It has to be unique in the 
+Virtual Observatory domain.
 
 \subsection{s\_fov}
 \label{sec:fov}
 
-A typical value for the field of view size will be given by $\lambda / D$ where $\lambda$ is the mid value of the spectral range and D is the largest diameter of the array antennae or telescopes.
+A typical value for the field of view size will be given by $\lambda / D$ where $\lambda$ 
+is the mid value of the spectral range and D is the largest diameter of the array antennae or 
+telescopes.
  
 \subsection{s\_resolution}
 \label{sec:res}
 
-A typical value for the spatial resolution will be given by $\lambda / L$ where $\lambda$ is the mid value of the spectral range and L is the longest distance in the uv plane. 
+A typical value for the spatial resolution will be given by $\lambda / L$ where $\lambda$ 
+is the mid value of the spectral range and L is the longest distance in the \emph{uv} plane. 
 
 \subsection{s\_region}
 
@@ -170,7 +202,8 @@ This shape will be the typical contour of the detectable beam. Of course it cann
 
 \subsection{o\_ucd}
 
-In the case of visibility data the "observable" is a complex number representing Fourier coefficients of the image Fourier transform. Its UCD string is \emph{stat.fourier}. 
+In the case of visibility data the "observable" is a complex number representing Fourier 
+coefficients of the image Fourier transform. Its UCD string is \emph{stat.fourier}. 
 
 \subsection{t\_exptime}
 TBC
@@ -185,42 +218,62 @@ parameters we propose to add to ObsCore in order to better describe visibility d
 Two options can be considered in the TAP or SIA services descriptions: 
 \begin{itemize}
 \item adding the new data model elements directly into the main ObsCore table
-\item providing an extra table for these, named ivoa.visibilities for instance,  which will be joined to the main table. 
+\item providing an extra table for these, named ivoa.visibilities for instance,  which will 
+be joined to the main table. 
 \end{itemize}
 
 \subsection{spatial parameters}
 
-The s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is the typical wavelength and l is the smallest distance in the uv plane. s\_fov\_min, s\_fov\_max, s\_resolution\_min, s\_resolution\_max are estimated like the typical values (see subsections \ref{sec:fov} and \ref{sec:res} ) where $\lambda$ is replaced by the minimum and maximum wavelength of the spectral ranges
+The s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is the typical 
+wavelength and l is the smallest distance in the uv plane. s\_fov\_min, s\_fov\_max, 
+s\_resolution\_min, s\_resolution\_max are estimated like the typical values (see subsections 
+\ref{sec:fov} and \ref{sec:res} ) where $\lambda$ is replaced by the minimum and maximum 
+wavelength of the spectral ranges
 
 
 \subsection{uv parameters}
 
 %uv\_distance\_min and uv\_distance\_max are straigthforward.
-uv\_distance\_min and uv\_distance\_max are evaluated by fitting an ellipse on the visibilities present in the uv plane.
+uv\_distance\_min and uv\_distance\_max are evaluated by fitting an ellipse on the 
+visibilities present in the uv plane.
 
 % Mireille but still for the spec it is good to redefine them here
-To compute the ellipse's eccentricity of the UV distribution a principal component analysis (PCA) with 2 components is performed over the data points sampling the UV plane to select the main axis of data scattering. 
-The first component is used to rotate the distribution of UV in a way that the major variation of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. The major axis length and the minor axis length of the ellipse are therefore defined as the semi distance between the most positive point along the $x$/$y$ axis and the most negative point among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This procedure allows the definition of the UV distribution eccentricity:
+To compute the ellipse's eccentricity of the UV distribution a principal component analysis 
+(PCA) with 2 components is performed over the data points sampling the UV plane to select the 
+main axis of data scattering. 
+The first component is used to rotate the distribution of UV in a way that the major variation 
+of the distribution is leaning towards the $x$ axis of a bi dimensional $xy$ Cartesian plane. 
+The major axis length and the minor axis length of the ellipse are therefore defined as the 
+semi distance between the most positive point along the $x$/$y$ axis and the most negative point 
+among the $y$ axis. For instance, if the range of the rotated UV will cover on the $x \in [-10, 
+10]$ the major axis distance would be 10, a similar procedure is done on the y axis. This 
+procedure allows the definition of the \emph{UV} distribution eccentricity:
 
 uv\_distribution\_exc) computed as follows:
 \begin{equation}
 uv\_distribution\_exc = \sqrt{1-\frac{b^2}{a^2}}
 \end{equation}
 where a is the major axis length and b is the minor axis length.
-The filling factor of the UV plane (hereafter uv\_distribution\_fill) is computed as the average number of samples found in a $N^{uv}_{samples}$x$N^{uv}_{samples}$ equispaced grid enclosing the rotated ellipse. In formulas,
- the boundaries of a cell (i,j) are defined by the boundaries
+The filling factor of the UV plane (hereafter uv\_distribution\_fill) is computed as the average 
+number of samples found in a $N^{uv}_{samples}$x$N^{uv}_{samples}$ equi-spaced grid enclosing the 
+rotated ellipse. In formulas, the boundaries of a cell (i,j) are defined by the boundaries
 \begin{equation}
-u \in [u_{min} + \frac{u_{max} - u_{min}}{N^{uv}_{samples}} \cdot i , u_{min} + \frac{u_{max} - u_{min}}{N^{uv}_{samples}} \cdot (i + 1)]
+u \in [u_{min} + \frac{u_{max} - u_{min}}{N^{uv}_{samples}} \cdot i , u_{min} + \frac{u_{max} - 
+u_{min}}{N^{uv}_{samples}} \cdot (i + 1)]
 \end{equation} 
 and
 \begin{equation}
-v \in [v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot j , v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot (j + 1)]
+v \in [v_{min} + \frac{v_{max} - v_{min}}{N^{uv}_{samples}} \cdot j , v_{min} + \frac{v_{max} - 
+v_{min}}{N^{uv}_{samples}} \cdot (j + 1)]
 \end{equation} 
-where $u_{max}$/$v_{max}$ are the respective maximum u/v of the uv sample and $u_{min}$/$v_{min}$ is the minimum u/v of the uv sample.
+where $u_{max}$/$v_{max}$ are the respective maximum u/v of the \emph{uv} sample and 
+$u_{min}$/$v_{min}$ is the minimum u/v of the \emph{uv} sample.
 
-Given the above boundaries the number of samples within a cell (i,j) will be $n^{uv}_{i,j}$ and uv\_distribution\_fill will be then computed as 
+Given the above boundaries the number of samples within a cell (i,j) will be $n^{uv}_{i,j}$ 
+and uv\_distribution\_fill will be then computed as 
 \begin{equation}
-uv\_distribution\_fill = \frac{\sum^{N^{uv}_{samples}}_{i=1} \sum^{N^{uv}_{samples}}_{j=1} n^{uv}_{i,j} }{(N^{uv}_{samples}) ^ 2},
+uv\_distribution\_fill = \frac{\sum^{N^{uv}_{samples}}_{i=1} \sum^{N^{uv}_{samples}}_{j=1} 
+n^{uv}_{i,j} }{(N^{uv}_{samples}) ^ 2},
 \end{equation}
 
 in the preliminary analysis $N^{uv}_{samples} = 1000$.
@@ -230,17 +283,21 @@ in the preliminary analysis $N^{uv}_{samples} = 1000$.
 
 \subsection{time parameters}
 
-t\_exp\_min and t\_exp\_max are added because of strong variation in the individual time stamps duration.
+t\_exp\_min and t\_exp\_max are added because of strong variation in the individual timestamps 
+duration.
 \subsection{instrumental parameters}
 
-They all give a predefined raw idea of resolution, field of view, maximum angular scale and sampling quality.
+They all give a predefined raw idea of resolution, field of view, maximum angular scale and 
+sampling quality.
 
 \subsection{uv coverage and dirty beam map}
 
-These uv\_coverage\_map and s\_resolution\_beam\_dirty parameters are  intended to be url to files containing these maps. 
+These uv\_coverage\_map and s\_resolution\_beam\_dirty parameters are  intended to be url to 
+files containing these maps. 
 Implementers may want to avoid adding url columns to the ObsCore table. 
-In that case DataLink \citep{std:DataLink} may provide a solution. The semantics FIELD in the \{link\} response  will contain \#auxiliary  for links to this map while  the content\_qualifier FIELD could contain the utype
-defined here in this ObsCore extension.
+In that case DataLink \citep{std:DataLink} may provide a solution. The semantics FIELD in the 
+\{link\} response  will contain \#auxiliary  for links to this map while  the content\_qualifier 
+FIELD could contain the utype defined here in this ObsCore extension.
 .
         
 \begin{landscape}
