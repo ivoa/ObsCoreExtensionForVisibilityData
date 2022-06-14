@@ -37,7 +37,7 @@
 \begin{document}
 
 \begin{abstract}
-	This is a proposed extension to the Obscore specification for description of visibility data
+This is a proposed extension to the Obscore specification for description of visibility data.
 \end{abstract}
 
 \section*{Acknowledgments}
@@ -46,7 +46,7 @@ The authors would like to thank all the participants in DM-WG and Radioastronomy
 for their ideas, critical reviews, and contributions to this document.
 We acknowledge also the support of ESCAPE (European Science Cluster of Astronomy
 and Particle Physics ESFRI Research Infrastructures) funded by the EU Horizon
-2020 research and innovation program (Grant Agreement n.824064).
+2020 research and innovation program (Grant Agreement no 824064).
 % are there other grants from partners to mention here?
 
 \section{Introduction}
@@ -75,7 +75,7 @@ multi-messenger astronomy.
 %mireille:
 % the needs for today as explored in recent meetings in Escape framework can also be summarized here
 % add a short paragraph here
-Although the interferometry data are nowadays dominent in radio field, similar issues occur for 
+Although the interferometry data are nowadays dominant in radio field, similar issues occur for 
 optical interferometry data. The extension we are defining here is valid for both domains.  
 
 
@@ -98,47 +98,53 @@ them in the ObsTAP TAP\_SCHEMA.
 \section{Visibility data specificities from the Data Discovery point of view}
 \label{sec:specificities}
 
-Visibility data are sets of complex number measurements giving amplitude and phase of 
-interference fringes obtained for a given field in sky, a given time, a given wavelength 
-or polarisation. 
+Visibility data are sets of complex numbers corresponding to the amplitude and phase 
+of correlation coefficients measured between pair of antennas (i.e., a baseline), at 
+a given time, a given wavelength or polarisation. The visibility data are a sparse 
+representation of the observed sky. The visibility data sets can be processed to obtain 
+interferometric images, through inverse Fourier algorithms. Each visibility measurement 
+corresponds to an interferometric fringe system on the sky. 
 
-They can be organised in the following way: catalogs of matrices of measurements for 
-various fields and settings of the antenna pair distances and orientation. Matrices may 
-or may not be regulary sampled in time, wavelength and polarisation.
+The imaging algorithms include a calibration step allowing to set the center of the 
+reconstructed image, setting this direction as a phase reference. The visibilities
+are then usually represented in a spatial frequency plane, called the \emph{uv} plane, 
+whose orientation is perpendicular to phase reference direction. The instantaneous PSF 
+(Point Spread Function) of an interferometer is the Fourier transform of all baselines 
+sampled in the \emph{uv} plane. Hence, the quality of the reconstructed images are 
+directly related to the set of baselines used for the measurements.
+
+Visibility data are usually organised as sets of matrices for various phase references
+(i.e., pointing, or fields) and configuration of the baselines, such as their
+distances and orientations. Such matrices may or may not be regularly sampled in time, 
+wavelength and polarisation.
     
-On the other side they are sparse in the spatial Fourier transform space (also called the 
-\emph{uv} plane) because it's impossible to cover regularly this space with a limited 
-number of antenna pairs.
-    
-How can the ObsCore parameters describe the characterization of these observations? 
-Obviously if there are several ``fields'' in the observation, these different fields should
-be described in several records of the ObsCore table because the s\_ra and s\_dec parameters 
-have to be unique.
+%How can the ObsCore parameters describe the characterization of these observations? 
+As for any other data product described with ObsCore, the description may be split into
+several records in the ObsCore table, when ObsCore parameters cannot represent the 
+variety of the data product coverage (e.g., if there are several observed ``fields'', 
+requiring different s\_ra and s\_dec value, or various groups of spectral bands, etc.) 
 
-Spectral and Time axis are regularly sampled but we can have gaps between time and spectral 
-intervals. In addition, on the spectral axis different samplings may coexist.  
-   
-Again a visibility observation will be split in several ObsCore records in order to ensure 
-the consistency of the time and spectral characterization parameters of each unit.
-    
-Finally, visibility measurements can be either integrated for all polarisations or split in 
-the different polarisation parameters (e.g., Stokes parameters) 
+We consider that consistent ObsCore records as described above defines datasets with 
+a dataproduct type set to ``visibility''.
 
-We consider that consistent ObsCore records as described above defines ``visibility'' 
-datasets in the sense of ObsCore.
-
-Radioastronomers generally make use of frequencies for designating the spectral ranges of 
-their observation. The standard ObsCore attributes em\_min em\_max  are in wavelength and 
-are not really convenient for them. That's why we should also provide their translation 
-into frequencies. 
+On the lower end of the radio spectrum, radio astronomers generally make use of 
+frequencies for designating the spectral ranges of their observation. The standard 
+ObsCore attributes em\_min em\_max  are in wavelength and are not really convenient. 
+That's why we should also provide their translation into frequencies. 
         
 Moreover visibility data show some dependency of the spatial field of view and resolution 
-with wavelength. Generally only a typical value for these two numbers can be given. 
-Contrary to what occurs with direct spatial observations, large scales may also be filtered 
-as are small scales. This depends of the smallest distance in the frequency plane.
-For large spectral ranges, the variations of fov and resolution along the axis may become so 
-large that the typical value cannot be sufficient to characterize the dataset. 
-Ranges of values for fov size and resolution will achieve this task more accurately
+with wavelength. Generally only a typical value for these two numbers can be given. It is 
+noticeable that this is the case for any measuring system allowing a large interval of 
+$\lambda/D$ (where $\lambda$ and $D$ are the wavelengths and the measuring system
+aperture scale). 
+
+Contrary to what occurs with direct imaging observations, the PSF of the interferometer
+is filtering spatial scales (large scales, when the small baselines are insufficiently 
+sampled; and vice versa for small scales with long baselines).
+For large spectral ranges, the variations of the field of view and the spatial resolution 
+along the axis may become so large that the typical value cannot be sufficient to 
+characterize the dataset. Ranges of values for such parameters are required to accurately 
+describe such datasets.
 
 The quality of the data strongly depends from the distribution of the visibility measurements 
 in the uv plane : the more complete the uv sampling plane, the better the reconstructed image. 
