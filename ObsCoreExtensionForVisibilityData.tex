@@ -24,7 +24,8 @@
 \author{Mark Lacy}
 \author{Mattia Mancini}
 \author{Yan Grange}
-
+\author{Alan Loh}
+\author{Baptiste Cecconi}
 
 \editor{Fran\c cois Bonnarel}
 
@@ -41,7 +42,8 @@
 
 \section*{Acknowledgments}
 
-The authors would like to thank all the participants in DM-WG and Radioastronomy-IG discussions  for their ideas, critical reviews, and contributions to this document.
+The authors would like to thank all the participants in DM-WG and Radioastronomy-IG discussions 
+for their ideas, critical reviews, and contributions to this document.
 We acknowledge also the support of ESCAPE (European Science Cluster of Astronomy
 and Particle Physics ESFRI Research Infrastructures) funded by the EU Horizon
 2020 research and innovation program (Grant Agreement n.824064).
@@ -50,10 +52,19 @@ and Particle Physics ESFRI Research Infrastructures) funded by the EU Horizon
 \section{Introduction}
 
 
-ObsCore specification \citep{std:OBSCORE} defines both a minimal datamodel to describe datasets and a table consistent with the model which can be served by Tap services. It has been successful to define a lot of data discovery services in astronomy.
+ObsCore specification \citep{std:OBSCORE} defines both a minimal datamodel to describe datasets 
+and a table consistent with the model which can be served by TAP services. It has been successful 
+to define a lot of data discovery services in astronomy.
 
 
-The emergence of the Radioastronomy Interest Group in the IVOA in April 2020 confirmed the strong interest of the radio astronomy community to distribute their data in the VO. A lot of groups now distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the situation is a bit different for interferometry visibility data. This was already exposed in 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO" \footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still worth reading. The current specification tries to cover the needs exposed in this note. 
+The emergence of the Radioastronomy Interest Group in the IVOA in April 2020 confirmed the strong 
+interest of the radio astronomy community to distribute their data in the VO. A lot of teams now 
+distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. 
+If reduced spectral cubes (and single dish data - {\it is that true ?} ) fit well with ObsCore, the 
+situation is a bit different for interferometry visibility data. This was already exposed in 2010 
+when Anita Richards wrote a note called "Radio interferometry data in the VO" 
+\footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is still 
+worth reading. The current specification tries to cover the needs exposed in this note. 
 % Mireille an attempt to widen the scope ??
 With the expansion of large radio astronomy projects such as LOFAR, NenuFAR, the future SKA, etc. and the emergence of interesting research topics matching data in all electromagnetic regimes, the virtual observatory framework can facilitate a wider access to radio data for experts and non-specialists radio astronomers in order to support collaborations in multi-wavelength, multi-messenger astronomy. 
 
