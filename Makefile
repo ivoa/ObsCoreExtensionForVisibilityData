@@ -7,7 +7,7 @@ DOCNAME = ObsCoreExtensionForVisibilityData
 DOCVERSION = 1.0
 
 # Publication date, ISO format; update manually for "releases"
-DOCDATE = 2021-11-04
+DOCDATE = 2022-04-28
 
 # What is it you're writing: NOTE, WD, PR, or REC
 DOCTYPE =  NOTE
