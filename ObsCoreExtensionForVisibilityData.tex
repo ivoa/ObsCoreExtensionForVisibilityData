@@ -301,10 +301,21 @@ sampling quality.
 These uv\_coverage\_map and s\_resolution\_beam\_dirty parameters are  intended to be url to 
 files containing these maps. 
 Implementers may want to avoid adding url columns to the ObsCore table. 
+
 In that case DataLink \citep{std:DataLink} may provide a solution. The semantics FIELD in the 
 \{link\} response  will contain \#auxiliary  for links to this map while  the content\_qualifier 
 FIELD could contain the utype defined here in this ObsCore extension.
-.
+
+
+\section{How to implement the extension in a TAP service}
+
+The ObsCore extension for visibility data described above SHOULD not be added to the main ObsCore table. An extension table called "visibilityobscore" SHOULD be added to the same schema instead. The two tables will be joigned in an extended ObsTAP ADQL query. A single dataset in each observation will be associated to a single row in ObsCore. It will be identified by a unique obs\_publisher\_did. This obs\_publisher\_did can be used as a foreign key to join the main table and the extension
+
+In the registry, the service capability will contain the ObsCore Model element an the visisbilityobscore Model element   and the visibilityobscore table will be described in the tableset of the service together with obscore.  
+
+
+
+
         
 \begin{landscape}
 \begin{longtable}{l  p{4cm} p{4cm} p{4cm} l l}
