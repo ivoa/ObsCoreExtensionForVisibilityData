@@ -14,18 +14,21 @@
 \usepackage{lscape}
 \usepackage{longtable}
 
-\title{IVOA Obscore Extension for Visibility data}
+\title{IVOA Obscore Extension for Radio data}
 
 \ivoagroup{Data Model Working Group}
 
 \author{Fran\c cois Bonnarel}
 \author{Mireille Louys}
 \author{Baptiste Cecconi}
+\author{Vincenzo Galluzzi}
 \author{Yan Grange}
 \author{Mark Kettenis}
 \author{Mark Lacy}
 \author{Alan Loh}
 \author{Mattia Mancini}
+\author{Peter Teuben}
+\author{Alessandra Zanichelli}
 
 
 
@@ -39,7 +42,7 @@
 \begin{document}
 
 \begin{abstract}
-This is a proposed extension to the Obscore specification for description of visibility data.
+This is a proposed extension to the Obscore specification for description of radio data.
 \end{abstract}
 
 \section*{Acknowledgments}
@@ -63,10 +66,10 @@ interest of the radio astronomy community to distribute their data in the VO. Ma
 distribute their data using VO standards\footnote{https://ivoa.net/documents/Notes/RadioVOImp/index.html}. 
 While reduced radio data products, such as images or spectral cubes, %(and single dish data - {\it is that true ?} ) 
 are mostly covered by the ObsCore model, the lower level observational data 
-(interferometric visibilities) require additional description parameters. This was already exposed 
+(interferometric visibilities, single dish data in SDFITS format or whatever) require additional description parameters. For interferometry, this was already exposed 
 in 2010 when Anita Richards wrote a note called "Radio interferometry data in the VO" 
 \footnote{https://wiki.ivoa.net/internal/IVOA/SiaInterface/Anita-InterferometryVO.pdf} which is 
-still worth reading. The current specification tries to cover the needs exposed in this note. 
+still worth reading. Among other goals, the current specification tries to cover the needs exposed in this note. 
 % Mireille an attempt to widen the scope ??
 With the expansion of large radio astronomy projects such as LOFAR, NenuFAR, the future SKA, etc. 
 and the emergence of interesting research topics matching data in all electromagnetic regimes, the 
@@ -77,8 +80,8 @@ multi-messenger astronomy.
 %mireille:
 % the needs for today as explored in recent meetings in Escape framework can also be summarized here
 % add a short paragraph here
-Although the interferometry data are nowadays dominant in radio field, similar issues occur for 
-optical interferometry data. The extension we are defining here is valid for both domains.  
+%Although the interferometry data are nowadays dominant in radio field, similar issues occur for 
+%optical interferometry data. The extension we are defining here is valid for both domains.  
 
 
 \begin{figure}[H]
@@ -93,12 +96,51 @@ optical interferometry data. The extension we are defining here is valid for bot
 
 %The role of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. It's only a fine grain improvement of this specification. 
 % Mireille's  suggestion 
-The scope of this Visibility ObsCore extension in the IVOA is very close to ObsCore itself. 
+The scope of this Radio ObsCore extension in the IVOA is very close to ObsCore itself. 
 Its goal is to add new specific features to the existing ObsCore metadata tables and expose 
 them in the ObsTAP TAP\_SCHEMA. 
-
-\section{Visibility data specificities from the Data Discovery point of view}
+\section{Radio data specifities from the Data Discovery point of view}
 \label{sec:specificities}
+On the lower end of the radio spectrum, radio astronomers generally make use of 
+frequencies for designating the spectral ranges of their observation. The standard 
+ObsCore attributes em\_min em\_max  are in wavelength and are not really convenient. 
+That's why we should also provide their translation into frequencies. 
+        
+Moreover radio data show some dependency of the spatial field of view and resolution 
+with wavelength. Generally only a typical value for these two numbers can be given. It is 
+noticeable that this is the case for any measuring system allowing a large interval of 
+$\lambda/D$ (where $\lambda$ and $D$ are the wavelengths and the measuring system
+aperture scale). 
+
+For the same reason the resolution power quantity doesn't make much sense for the whole dataset.
+Only a typical one can be given
+It would be better to introduce the constant absolute resolution in frequency unit.
+
+\subsection{Single dish and beam forming data}
+
+Typically Single Dish data gather emission in a central beam for each spectral sample in the spectral band and polarization. They provide spectra (the special case where observers span the time axis, record time stamps and thus produce dynamical spectra is tackled in an other document). In a spectrum case the spatial "field of view" and spatial "resolution" may be considered as the same concept because it's not possible to distinguish two sources inside the beam. Another perspective on this is to consider that spatial resolution doesn't make sense for spectra. 
+
+However in many cases more sophisticated observing modes allow to span wider parts of the sky. Fig \ref{fig:SD} shows some of these modes. 
+
+It is important to add these observing scan modes in the dataset description in order to allow astronomers to better understand in advance  the structure of the data which will be retrieved in the typical SDFITS format (or any other adapted format such as set of related FITS tables or whatever).
+
+
+Observing configuration features such as multi-feed receptors available on the telescope (allowing multi spectra observation at the same time) should also be given. 
+
+In the case of beamforming data obtained with an array of antennae, "beamforming" should also be considered as an observing configuration feature. 
+
+\begin{figure}[H]
+\centering
+
+\includegraphics[width=0.9\textwidth]{SingleDish.png}
+\caption{Single Dish Observation Sky scan modes}
+\label{fig:SD}
+\end{figure}
+
+
+
+\subsection{Visibility data }
+\label{sec:visibility}
 
 Visibility data are sets of complex numbers corresponding to the amplitude and phase 
 of correlation coefficients measured between pair of antennas (i.e., a baseline), at 
@@ -129,16 +171,7 @@ requiring different s\_ra and s\_dec value, or various groups of spectral bands,
 We consider that consistent ObsCore records as described above defines datasets with 
 a dataproduct type set to ``visibility''.
 
-On the lower end of the radio spectrum, radio astronomers generally make use of 
-frequencies for designating the spectral ranges of their observation. The standard 
-ObsCore attributes em\_min em\_max  are in wavelength and are not really convenient. 
-That's why we should also provide their translation into frequencies. 
-        
-Moreover visibility data show some dependency of the spatial field of view and resolution 
-with wavelength. Generally only a typical value for these two numbers can be given. It is 
-noticeable that this is the case for any measuring system allowing a large interval of 
-$\lambda/D$ (where $\lambda$ and $D$ are the wavelengths and the measuring system
-aperture scale). 
+
 
 Contrary to what occurs with direct imaging observations, the PSF of the interferometer
 is filtering spatial scales (large scales, when the small baselines are insufficiently 
@@ -171,12 +204,12 @@ we can still predict ranges of some of those by using some kind of facility desc
 Important features are the antenna diameter (or maximum antenna diameter), the number of 
 antennae and the minimum and maximum distance between antennae of the array.
 
-\section{ObsCore attributes definition valid for visibility data}
-\label{sec:ObsCoreVisDef}
+\section{ObsCore attributes definition valid for radio data}
+\label{sec:ObsCoreRadDef}
 
 %Some mandatory or optional parameters will have peculiar estimation for visibility data.
 For visibilities some of the definitions on Obscore datamodel elements need to be adjusted 
-to fitthe peculiarity of medata for datasets partition, uv space, etc.
+to fit the peculiarity of medata for datasets partition, uv space, etc.
 
 \subsection{obs\_id}
 
@@ -195,23 +228,28 @@ Virtual Observatory domain.
 \label{sec:fov}
 
 A typical value for the field of view size will be given by $\lambda / D$ where $\lambda$ 
-is the mid value of the spectral range and D is the largest diameter of the array antennae or 
+is the mid value of the spectral range and D is the  diameter of the telecope or the largest diameter of the array antennae or 
 telescopes.
  
 \subsection{s\_resolution}
 \label{sec:res}
+In the case of single dish this is the beam size inferred from the wavelength and diameter. 
+In the case of interferometry, a typical value for the spatial resolution will be given by $\lambda / L$ where $\lambda$ 
+is the mid value of the spectral range and L is the longest distance in the \emph{uv} plane.
 
-A typical value for the spatial resolution will be given by $\lambda / L$ where $\lambda$ 
-is the mid value of the spectral range and L is the longest distance in the \emph{uv} plane. 
 
 \subsection{s\_region}
 
-This shape will be the typical contour of the detectable beam. Of course it cannot be accurate. 
+For single dish data it will strongly depnd of the scanning mode. 
+This shape will be the typical contour of the detectable beam for interferometry. Of course it cannot be accurate. 
 
 \subsection{o\_ucd}
 
+In the case of single dish data it is generally a flux or flux density in Jy.
+
 In the case of visibility data the "observable" is a complex number representing Fourier 
 coefficients of the image Fourier transform. Its UCD string is \emph{stat.fourier}. 
+
 
 \subsection{t\_exptime}
 TBC
@@ -219,10 +257,11 @@ TBC
 \subsection{t\_resolution}
 TBC 
 
-\section{ObsCore extension for visibility data}
+\section{ObsCore extension for radio data}
 
 Table \ref{tab:ExtensionAtt} shows the %additional 
-parameters we propose to add to ObsCore in order to better describe visibility data.
+parameters we propose to add to ObsCore in order to better describe radio single dish and visibility data.
+The last column indicates if the attribute is useful for all radio datasets or only for visibilities, beamforming, or single dish data.
 Two options can be considered in the TAP or SIA services descriptions: 
 \begin{itemize}
 \item adding the new data model elements directly into the main ObsCore table
@@ -232,14 +271,15 @@ be joined to the main table.
 
 \subsection{spatial parameters}
 
-The s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is the typical 
-wavelength and l is the smallest distance in the uv plane. s\_fov\_min, s\_fov\_max, 
+s\_fov\_min, s\_fov\_max, 
 s\_resolution\_min, s\_resolution\_max are estimated like the typical values (see subsections 
 \ref{sec:fov} and \ref{sec:res} ) where $\lambda$ is replaced by the minimum and maximum 
 wavelength of the spectral ranges
-
+In the case of interferometry, the s\_maximum\_angular\_scale is estimated as $\lambda/l$ where $\lambda$ is the typical 
+wavelength and l is the smallest distance in the uv plane. 
 
 \subsection{uv parameters}
+These parameters are valid for interferometry only.
 
 %uv\_distance\_min and uv\_distance\_max are straigthforward.
 uv\_distance\_min and uv\_distance\_max are evaluated by fitting an ellipse on the 
@@ -293,7 +333,7 @@ in the preliminary analysis $N^{uv}_{samples} = 1000$.
 
 t\_exp\_min and t\_exp\_max are added because of strong variation in the individual timestamps 
 duration.
-\subsection{instrumental parameters}
+\subsection{Observation modes, Observation configuration and instrumental parameters}
 
 They all give a predefined raw idea of resolution, field of view, maximum angular scale and 
 sampling quality.
@@ -311,63 +351,67 @@ FIELD could contain the utype defined here in this ObsCore extension.
 
 \section{How to implement the extension in a TAP service}
 
-The ObsCore extension for visibility data described above SHOULD not be added to the main ObsCore table. An extension table called "visibilityobscore" SHOULD be added to the same schema instead. The two tables will be joigned in an extended ObsTAP ADQL query. A single dataset in each observation will be associated to a single row in ObsCore. It will be identified by a unique obs\_publisher\_did. This obs\_publisher\_did can be used as a foreign key to join the main table and the extension
+The ObsCore extension for radio (including or not visibility data) described above SHOULD not be added to the main ObsCore table. An extension table called "radioObscore" SHOULD be added to the same schema instead. The two tables will be joigned in an extended ObsTAP ADQL query. A single dataset in each observation will be associated to a single row in ObsCore. It will be identified by a unique obs\_publisher\_did. This obs\_publisher\_did can be used as a foreign key to join the main table and the extension
 
-In the registry, the service capability will contain the ObsCore Model element an the visisbilityobscore Model element   and the visibilityobscore table will be described in the tableset of the service together with obscore.  
+In the registry, the two service tables will be described in the tableset of the service. They will show respectively the ObsCore Model utype an the radioObscore Model utype. 
 
 
 
 
         
 \begin{landscape}
-\begin{longtable}{l  p{4cm} p{4cm} p{4cm} l l}
+\begin{longtable}{l  p{4cm} p{4cm} p{4cm} l l l}
 \sptablerule
-\textbf{column name}&\textbf{definition}&\textbf{utype}&\textbf{ucd}&\textbf{unit}\cr
+\textbf{column name}&\textbf{definition}&\textbf{utype}&\textbf{ucd}&\textbf{unit}&{validity}\cr
 \sptablerule
 \sptablerule
-\texttt{ s\_resolution\_min}&\texttt{ Angular resolution, longest baseline and  max frequency dependant}&{ Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.LoLim}&{pos.AngResol;stat.min}&{arcsec}\cr
+\texttt{ s\_resolution\_min}&\texttt{ Angular resolution, longest baseline and  max frequency dependant}&{ Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.LoLim}&{pos.AngResol;stat.min}&{arcsec}&radio\cr
 \sptablerule
-\texttt{s\_resolution\_max}&\texttt{Angular resolution, longest baseline and min frequency dependant}&\texttt{Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.HiLim}&{pos.AngResol;stat.max}&arcsec\cr
+\texttt{s\_resolution\_max}&\texttt{Angular resolution, longest baseline and min frequency dependant}&\texttt{Char.SpatialAxis.\newline Resolution.Bounds.\newline Limits.HiLim}&{pos.AngResol;stat.max}&arcsec&radio\cr
 \sptablerule
-\texttt{s\_fov\_min}&\texttt{field of view diameter,  min value, max frequency dependant}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.LowLim}&{phys.angSize;instr.fov;\newline stat.min}&deg\cr
+\texttt{s\_fov\_min}&\texttt{field of view diameter,  min value, max frequency dependant}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.LowLim}&{phys.angSize;instr.fov;\newline stat.min}&deg&radio\cr
 \sptablerule
-\texttt{s\_fov\_max}&\texttt{field of view diameter,  max value, min frequency dependant}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg\cr
+\texttt{s\_fov\_max}&\texttt{field of view diameter,  max value, min frequency dependant}&\texttt{Char.SpatialAxis.\newline Coverage.Bounds.\newline Extent.HiLim}&{phys.angSize;instr.fov;\newline stat.max}&deg&radio\cr
 \sptablerule
-\texttt{s\_maximum\_angular\_scale}&\texttt{maximum scale in dataset, shortest baseline and  frequency dependant}&\texttt{Char.SpatialAxis.\newline Resolution.Scale.\newline Limits.HiLim}&{phys.angSize;stat.max}&arcsec\cr
+\texttt{s\_maximum\_angular\_scale}&\texttt{maximum scale in dataset, shortest baseline and  frequency dependant}&\texttt{Char.SpatialAxis.\newline Resolution.Scale.\newline Limits.HiLim}&{phys.angSize;stat.max}&arcsec&interferometry\cr
 \sptablerule
-\texttt{f\_min}&\texttt{spectral coverage min in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.LoLim}&{em.freq;stat.min}&Mhz\cr
+\texttt{f\_min}&\texttt{spectral coverage min in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.LoLim}&{em.freq;stat.min}&Mhz&radio\cr
 \sptablerule
-\texttt{f\_max}&\texttt{spectral coverage max in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Mhz\cr
-\texttt{t\_exp\_min}&\texttt{minimum integration time per sample}&\texttt{Char.TimeAxis.\newline Sampling.Extent\newline LoLim}&{time.duration;obs.exposure;\newline stat.min}&s\cr
+\texttt{f\_max}&\texttt{spectral coverage max in frequency}&\texttt{Char.SpectralAxis.\newline Coverage.Bounds\newline Limits.HiLim}&{em.freq;stat.max}&Mhz&radio\cr
+\texttt{t\_exp\_min}&\texttt{minimum integration time per sample}&\texttt{Char.TimeAxis.\newline Sampling.Extent\newline LoLim}&{time.duration;obs.exposure;\newline stat.min}&s&radio\cr
 \sptablerule
-\texttt{t\_exp\_max}&\texttt{maximum integration time per sample}&\texttt{Char.TimeAxis.\newline Sampling.Extent\newline HiLim}&{time.duration;obs.exposure;\newline stat.max}&s\cr
+\texttt{t\_exp\_max}&\texttt{maximum integration time per sample}&\texttt{Char.TimeAxis.\newline Sampling.Extent\newline HiLim}&{time.duration;obs.exposure;\newline stat.max}&s&radio\cr
 \sptablerule
-\texttt{uv\_distance\_min}&\texttt{minimal distance in uv plane}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline Limits.LoLim}&stat.fourier;pos;stat.min&m& \cr
+\texttt{uv\_distance\_min}&\texttt{minimal distance in uv plane}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline Limits.LoLim}&stat.fourier;pos;stat.min&m&interferometry \cr
 \sptablerule
-\texttt{uv\_distance\_max}&\texttt{maximal distance in uv plane}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline Limits.LoLim}&stat.fourier;pos;stat.max&m \cr
+\texttt{uv\_distance\_max}&\texttt{maximal distance in uv plane}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline Limits.LoLim}&stat.fourier;pos;stat.max&m&interferometry \cr
 \sptablerule
-\texttt{uv\_distribution\_exc}&\texttt{excentricity of uv distribution}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline Excentricity}&stat.fourier;pos& \cr
+\texttt{uv\_distribution\_exc}&\texttt{excentricity of uv distribution}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline Excentricity}&stat.fourier;pos&&interferometry \cr
 \sptablerule
-\texttt{uv\_distribution\_fill}&\texttt{filling factor of uv distribution}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline FillingFactor}&stat.fourier;pos& \cr
+\texttt{uv\_distribution\_fill}&\texttt{filling factor of uv distribution}&\texttt{Char.UVAxis.\newline  Coverage.Bounds.\newline FillingFactor}&stat.fourier;pos&&interferometry \cr
 \sptablerule
 % mireille here for antennae features , it is clear it belongs to instrument. 
 %Not useful to use the term in the name .
 %\texttt{instrument\_ant\_number}&\texttt{number of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber}&instr.baseline;meta.number& \cr
 %\sptablerule
-\texttt{ant\_number}&\texttt{number of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber}&instr.baseline;meta.number& \cr
+\texttt{ant\_number}&\texttt{number of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber}&instr.baseline;meta.number&&interferometry, beamforming \cr
 \sptablerule
 % same for all antenae features
-\texttt{instrument\_ant\_min\_dist}&\texttt{minimum distance between antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline MinDist}&instr.baseline;stat.min&m \cr
+\texttt{instrument\_ant\_min\_dist}&\texttt{minimum distance between antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline MinDist}&instr.baseline;stat.min&m&interferometry \cr
 \sptablerule
-\texttt{instrument\_ant\_max\_dist}&\texttt{maximum distance between antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline MaxDist}&instr.baseline;stat.max&m \cr
+\texttt{instrument\_ant\_max\_dist}&\texttt{maximum distance between antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline MaxDist}&instr.baseline;stat.max&m&interferometry \cr
 \sptablerule
-\texttt{instrument\_ant\_diameter}&\texttt{diameter of antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline Diameter}&instr&m \cr
+\texttt{instrument\_ant\_diameter}&\texttt{diameter of telecope or antennae in array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline Diameter}&instr&m&radio \cr
 \sptablerule
-\texttt{uv\_distribution\_map}&\texttt{uv distribution map}&\texttt{Char.UVAxis.\newline  Sampling.\newline Sensitivity.Map}&stat.fourier;pos& \cr
+\texttt{instrument\_feed}&\texttt{number of feeds}&\texttt{Provenance.ObsConfig.\newline Instrument.Feed}&instr&&single dish \cr
 \sptablerule
-\texttt{s\_resolution\_beam\_dirty}&\texttt{dirty beam}&\texttt{Char.SpatialAxis.\newline Resolution.\newline Variability.DirtyBeam.\newline Map}&{pos.AngResol}&\cr
-
-\caption{ObsCore visibility data extension parameters}
+\texttt{sky\_scan\_mode}&\texttt{scan mode among\newline on-off,raster map, on the fly map\newline }&\texttt{Provenance.\newline Observation.\newline sky\_scan\_mode}&instr&&single dish \cr
+\sptablerule
+\texttt{uv\_distribution\_map}&\texttt{uv distribution map}&\texttt{Char.UVAxis.\newline  Sampling.\newline Sensitivity.Map}&stat.fourier;pos&&interferometry \cr
+\sptablerule
+\texttt{s\_resolution\_beam\_dirty}&\texttt{dirty beam}&\texttt{Char.SpatialAxis.\newline Resolution.\newline Variability.DirtyBeam.\newline Map}&{pos.AngResol}&&interferometry\cr
+\sptablerule
+\caption{ObsCore radio data extension parameters}
 \label{tab:ExtensionAtt}
 \end{longtable}
 \end{landscape}
