@@ -2,7 +2,6 @@
 \input tthdefs
 
 \newcommand{\xtype}[1]{\texttt{#1}}
-\newcommand{\ucd}[1]{\texttt{#1}}
 
 \usepackage{listings}
 \lstloadlanguages{XML,sh}
@@ -54,7 +53,7 @@ and Particle Physics ESFRI Research Infrastructures) funded by the EU Horizon
 \section{Introduction}
 
 
-ObsCore specification \citep{std:OBSCORE} defines both a minimal datamodel to describe datasets 
+ObsCore specification \citep{2017ivoa.spec.0509L} defines both a minimal datamodel to describe datasets 
 and a table consistent with the model which can be served by TAP services. It has been successful 
 to define a lot of data discovery services in astronomy.
 
@@ -304,7 +303,7 @@ These uv\_coverage\_map and s\_resolution\_beam\_dirty parameters are  intended 
 files containing these maps. 
 Implementers may want to avoid adding url columns to the ObsCore table. 
 
-In that case DataLink \citep{std:DataLink} may provide a solution. The semantics FIELD in the 
+In that case DataLink \citep{2015ivoa.spec.0617D} may provide a solution. The semantics FIELD in the 
 \{link\} response  will contain \#auxiliary  for links to this map while  the content\_qualifier 
 FIELD could contain the utype defined here in this ObsCore extension.
 
@@ -374,6 +373,6 @@ array}&\texttt{Provenance.ObsConfig.\newline Instrument.Array.\newline AntNumber
 \end{landscape}
 
 
-\bibliography{ivoatex/ivoabib}
+\bibliography{ivoatex/ivoabib,ivoatex/docrepo}
 
 \end{document}
